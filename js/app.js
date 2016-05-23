@@ -2,25 +2,38 @@
 
     var app = {}
 
-    var Rectangle = Backbone.Model.extend({});
+    app.colors = ['#F00', '#0F0', '#00F'];
 
-    var rectangles = [new Rectangle({
+    app.randomInt = function(min, max) {
+        return Math.floor(Math.random() * (max - min + 1)) + min;
+    }
+
+    app.randomDimension = function() {
+        return this.randomInt(50, 100);
+    }
+
+    app.randomPosition = function() {
+        return this.randomInt(5, 200);
+    }
+
+    app.randomColor = function() {
+        return this.colors[this.randomInt(0, app.colors.length - 1)];
+    }
+
+    app.Rectangle = Backbone.Model.extend({});
+
+    app.rectangles = [];
+
+    for(var i=1; i < 10; i++){
+       app.rectangles.push(new app.Rectangle({
             id: 1,
-            width: 150,
-            height: 100,
-            top: 5,
-            left: 5,
-            color: "#00F"
-        }),
-        new Rectangle({
-            id: 2,
-            width: 150,
-            height: 100,
-            top: 90,
-            left: 100,
-            color: "#0F0"
-        })
-    ];
+            width: app.randomDimension(),
+            height: app.randomDimension(),
+            top: app.randomPosition(),
+            left: app.randomPosition(),
+            color: app.randomColor()
+        }));
+    }
 
     app.AppView = Backbone.View.extend({
         el: '#container',
@@ -41,7 +54,7 @@
 
     app.appView = new app.AppView({
         model: {
-            rectangles: rectangles
+            rectangles: app.rectangles
         }
     });
 
