@@ -14,7 +14,6 @@
 
     var appView = new AppView();
 
-
     var rect = new Rectangle({
         width: 150,
         height: 100,
@@ -22,7 +21,6 @@
         left: 50,
         color: "#F00"
     });
-
 
     function logColor(rectangle, newColor, context) {
         console.log("logColor(" + newColor + ");");
@@ -32,9 +30,5 @@
     rect.on("change:color", logColor);
 
     rect.set("color", '#0F0');
-
-
-
-
 
 })(Backbone);
