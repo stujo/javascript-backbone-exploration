@@ -23,7 +23,7 @@
     </div>
 
     <script type="text/template" id="canvas-template">
-      <div id="canvas"><% _.each(model.rectangles, function(rectangle) { %> 
+      <div id="canvas"><% model.rectangles.each(function(rectangle) { %> 
           <%=  templates.rectangle({rectangle: rectangle}) %>
       <% }) %></div>
     </script>
