@@ -1,33 +1,44 @@
 <!doctype html>
-
 <html lang="en">
+
 <head>
-  <meta charset="utf-8">
-
-  <title>Backbone Rectangles</title>
-  <meta name="description" content="Backbone Exploration">
-  <meta name="author" content="stujo">
-
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/normalize/4.1.1/normalize.css">
-  <link rel="stylesheet" href="css/styles.css?v=1.0">
-
-  <!--[if lt IE 9]>
+    <meta charset="utf-8">
+    <title>Backbone Rectangles</title>
+    <meta name="description" content="Backbone Exploration">
+    <meta name="author" content="stujo">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/normalize/4.1.1/normalize.css">
+    <link rel="stylesheet" href="css/styles.css?v=1.0">
+    <!--[if lt IE 9]>
     <script src="http://html5shiv.googlecode.com/svn/trunk/html5.js"></script>
   <![endif]-->
 </head>
 
 <body>
-  <h1>Backbone Exploration</h1>
-  <div id="container">Loading...</div>
-  <div>
-    <ul>
-      <li><a href="http://backbonejs.org/">http://backbonejs.org/</a></li>
-    </ul>
-  </div>
-  <script src="node_modules/jquery/dist/jquery.js"></script>
-  <script src="node_modules/underscore/underscore.js"></script>
-  <script src="node_modules/backbone/backbone.js"></script>
-  <script src="js/app.js"></script>
-</body>
-</html>
+    <h1>Backbone Exploration</h1>
+    <div id="container">Loading...</div>
+    <div>
+        <ul>
+            <li><a href="http://backbonejs.org/">http://backbonejs.org/</a></li>
+        </ul>
+    </div>
 
+    <script type="text/template" id="canvas-template">
+      <div id="canvas"><% _.each(model.rectangles, function(rectangle) { %> 
+          <%=  templates.rectangle({rectangle: rectangle}) %>
+      <% }) %></div>
+    </script>
+
+    <script type="text/template" id="rectangle-template">
+     	<div class="rectangle" data-rectangle-id="<%= rectangle.get('id') %>" style="
+     	top: <%= rectangle.get('top') %>px;
+     	left: <%= rectangle.get('left') %>px;
+     	background-color: <%= rectangle.get('color') %>;
+     	"></div>
+    </script>
+    <script src="node_modules/jquery/dist/jquery.js"></script>
+    <script src="node_modules/underscore/underscore.js"></script>
+    <script src="node_modules/backbone/backbone.js"></script>
+    <script src="js/app.js"></script>
+</body>
+
+</html>
