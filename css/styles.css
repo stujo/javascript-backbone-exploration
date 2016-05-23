@@ -1,0 +1,25 @@
+body{
+	width: 80%;
+	margin: 10px auto;
+}
+
+#canvas {
+	border: 1px solid #333;
+	min-height: 200px;
+    position: relative;
+    overflow: hidden;
+}
+
+.rectangle {
+   position: absolute;
+   width: 150px;
+   height: 100px;
+   top: 5px;
+   background-color: #F00;
+   left: 50px;
+   border: 1px solid #333;
+}
+
+.rectangle .selected {
+   border-style: dashed;
+}
