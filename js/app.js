@@ -4,21 +4,53 @@
 
     app.rectangles = (function() {
         "use strict";
+
+        var pojos = undefined;
         var colors = ['#F00', '#0F0', '#00F'];
 
-        var randomInt = function(min, max) {
+        if (typeof(Storage) !== "undefined") {
+            // Code for localStorage/sessionStorage.
+            try {
+            	pojos = JSON.parse(localStorage.getItem("rectangles"));
+            } catch(err){
+            	console.log(err);
+            }
+        }
+
+
+        if (typeof pojos !== 'object') {
+            pojos = [];
+            // POJOs can be passed instead of 'Rectangle' objects
+            for (var i = 1; i < 10; i++) {
+                pojos.push({
+                    id: i,
+                    width: randomDimension(),
+                    height: randomDimension(),
+                    top: randomPosition(),
+                    left: randomPosition(),
+                    color: randomColor()
+                });
+            }
+	        if (typeof(Storage) !== "undefined") {
+	            // Code for localStorage/sessionStorage.
+	            localStorage.setItem("rectangles", JSON.stringify(pojos));
+	        }
+        }
+
+
+        function randomInt(min, max) {
             return Math.floor(Math.random() * (max - min + 1)) + min;
         }
 
-        var randomDimension = function() {
+        function randomDimension() {
             return randomInt(50, 100);
         }
 
-        var randomPosition = function() {
+        function randomPosition() {
             return randomInt(5, 200);
         }
 
-        var randomColor = function() {
+        function randomColor() {
             return colors[randomInt(0, colors.length - 1)];
         }
 
@@ -31,16 +63,8 @@
         var rectangles = new Rectangles;
 
         // POJOs can be passed instead of 'Rectangle' objects
-        for (var i = 1; i < 10; i++) {
-            rectangles.add({
-                id: i,
-                width: randomDimension(),
-                height: randomDimension(),
-                top: randomPosition(),
-                left: randomPosition(),
-                color: randomColor()
-            });
-        }
+        rectangles.add(pojos);
+
         return rectangles;
     })();
 
