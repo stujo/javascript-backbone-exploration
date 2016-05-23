@@ -2,25 +2,27 @@
 
     var Rectangle = Backbone.Model.extend({});
 
+    var rect = new Rectangle({
+        width: 150,
+        height: 100,
+        top: 50,
+        left: 50,
+        color: "#F00"
+    });
+
     var AppView = Backbone.View.extend({
         el: '#container',
-        initialize: function() {
+        template: _.template('<div id="canvas"><div class="rectangle" style="top: <%= model.get("top") %>px"></div></div>'),
+      initialize: function() {
             this.render();
         },
         render: function() {
-            this.$el.html('<div id="canvas"><div class="rectangle"></div></div>');
+            this.$el.html(this.template({model: rect}));
         }
     });
 
     var appView = new AppView();
 
-    var rect = new Rectangle({
-        width: 150,
-        height: 100,
-        top: 5,
-        left: 50,
-        color: "#F00"
-    });
 
     function logColor(rectangle, newColor, context) {
         console.log("logColor(" + newColor + ");");
