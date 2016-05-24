@@ -2,28 +2,33 @@
 
     var app = {}
 
-    app.rectangles = (function() {
+    function loadRectangles(onChange) {
         "use strict";
 
-        var pojos = undefined;
         var colors = ['#F00', '#0F0', '#00F'];
 
-        if (typeof(Storage) !== "undefined") {
-            // Code for localStorage/sessionStorage.
-            try {
-            	pojos = JSON.parse(localStorage.getItem("rectangles"));
-            } catch(err){
-            	console.log(err);
-            }
-        }
+        var localStorage = new Backbone.LocalStorage('rectangle-backbone');
 
+        var Rectangle = Backbone.Model.extend({
+            localStorage: localStorage,
+        });
+
+        var Rectangles = Backbone.Collection.extend({
+            model: Rectangle,
+            initialize: function() {
+                this.on("change", onChange);
+            }
+        });
+
+        var rectangles = new Rectangles;
+
+        var pojos = localStorage.findAll();
 
         if (typeof pojos !== 'object') {
             pojos = [];
             // POJOs can be passed instead of 'Rectangle' objects
             for (var i = 1; i < 10; i++) {
                 pojos.push({
-                    id: i,
                     width: randomDimension(),
                     height: randomDimension(),
                     top: randomPosition(),
@@ -31,10 +36,6 @@
                     color: randomColor()
                 });
             }
-	        if (typeof(Storage) !== "undefined") {
-	            // Code for localStorage/sessionStorage.
-	            localStorage.setItem("rectangles", JSON.stringify(pojos));
-	        }
         }
 
 
@@ -54,20 +55,21 @@
             return colors[randomInt(0, colors.length - 1)];
         }
 
-        var Rectangle = Backbone.Model.extend({});
-
-        var Rectangles = Backbone.Collection.extend({
-            model: Rectangle
-        });
-
-        var rectangles = new Rectangles;
 
         // POJOs can be passed instead of 'Rectangle' objects
         rectangles.add(pojos);
 
-        return rectangles;
-    })();
 
+        setInterval(function() {
+            var rect = rectangles.at(randomInt(0, rectangles.length - 1));
+            rect.set('color', randomColor());
+            rect.set('left', randomPosition());
+            rect.save();
+        }, 1000);
+
+
+        return rectangles;
+    }
 
     app.AppView = Backbone.View.extend({
         el: '#container',
@@ -86,11 +88,16 @@
         }
     });
 
+
     app.appView = new app.AppView({
         model: {
-            rectangles: app.rectangles
+            rectangles: loadRectangles(refresh)
         }
     });
+
+    function refresh(){
+    	app.appView.render();
+    }
 
 
 })(Backbone);
