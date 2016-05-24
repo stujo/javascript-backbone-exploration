@@ -1,8 +1,17 @@
 (function(Backbone) {
 
-    var app = {}
+    var app = {
+    	currentView: null,
+    	switchView: function(newView){
+    		if(this.currentView && this.currentView.remove){
+    			this.currentView.remove();
+    		}
+    		this.currentView = newView;
+    	}
+    }
 
-    function loadRectangles(onChange) {
+
+    function loadRectangles() {
         "use strict";
 
         var colors = ['#F00', '#0F0', '#00F'];
@@ -14,10 +23,7 @@
         });
 
         var Rectangles = Backbone.Collection.extend({
-            model: Rectangle,
-            initialize: function() {
-                this.on("change", onChange);
-            }
+            model: Rectangle
         });
 
         var rectangles = new Rectangles;
@@ -71,13 +77,20 @@
         return rectangles;
     }
 
-    app.AppView = Backbone.View.extend({
+    app.rectangles = loadRectangles();
+
+    console.log(app.rectangles);
+
+
+    app.DefaultView = Backbone.View.extend({
         el: '#container',
         template: _.template($('#canvas-template').html()),
         rectangleTemplate: _.template($('#rectangle-template').html()),
         initialize: function() {
             this.render();
+            this.listenTo(this.model.rectangles, "change", this.render);
         },
+        model: { rectangles: app.rectangles },
         render: function() {
             this.$el.html(this.template({
                 model: this.model,
@@ -89,15 +102,30 @@
     });
 
 
-    app.appView = new app.AppView({
-        model: {
-            rectangles: loadRectangles(refresh)
+    var AppRouter = Backbone.Router.extend({
+        routes: {
+            "rectangles/:id": "getRectangle",
+            "*actions": "defaultRoute"
+            // Backbone will try to match the route above first
         }
     });
+    
 
-    function refresh(){
-    	app.appView.render();
-    }
+    // Instantiate the router
+    app.router = new AppRouter;
+    app.router.on('route:getRectangle', function(id) {
+        // Note the variable in the route definition being passed in here
+        alert("Get post number " + id);
+        switchView(null);
+    });
+    
+    app.router.on('route:defaultRoute', function(actions) {
+        app.switchView(new app.DefaultView());
+    });
+    
+    // Start Backbone history a necessary step for bookmarkable URL's
+    Backbone.history.start();
+
 
 
 })(Backbone);
