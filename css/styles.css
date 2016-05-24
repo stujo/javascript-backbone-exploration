@@ -19,8 +19,8 @@ body{
    left: 50px;
    border: 1px solid #333;
    opacity: 0.3;
-}
-
-.rectangle .selected {
-   border-style: dashed;
+   color: #FFF;
+   overflow: hidden;
+   text-align: left;
+   font-size: 70%;
 }

@@ -28,16 +28,25 @@
       <% }) %></div>
     </script>
 
-    <script type="text/template" id="rectangle-template">
+    <script type="text/template" id="rectangle-fragment-template">
      	<div class="rectangle" data-rectangle-id="<%= rectangle.get('id') %>" style="
      	top: <%= rectangle.get('top') %>px;
      	left: <%= rectangle.get('left') %>px;
      	height: <%= rectangle.get('height') %>px;
      	width: <%= rectangle.get('width') %>px;
      	background-color: <%= rectangle.get('color') %>;
-     	"></div>
+     	"><%= rectangle.get('id') %></div>
     </script>
 
+    <script type="text/template" id="rectangle-template">
+     	<div data-rectangle-id="<%= rectangle.get('id') %>">
+	     	<div>top: <%= rectangle.get('top') %>px</div>
+	     	<div>left: <%= rectangle.get('left') %>px</div>
+	     	<div>height: <%= rectangle.get('height') %>px</div>
+	     	<div>width: <%= rectangle.get('width') %>px</div>
+	     	<div>background-color: <%= rectangle.get('color') %></div>
+     	</div>
+    </script>
 
 
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>

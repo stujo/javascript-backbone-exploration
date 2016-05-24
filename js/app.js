@@ -81,18 +81,25 @@
 
     app.rectangles = loadRectangles();
 
-    console.log(app.rectangles);
-
-
     app.DefaultView = Backbone.View.extend({
-        el: '#container',
+        tagName: 'div',
+        id: 'default_view',
         template: _.template($('#canvas-template').html()),
-        rectangleTemplate: _.template($('#rectangle-template').html()),
+        rectangleTemplate: _.template($('#rectangle-fragment-template').html()),
         initialize: function() {
-            this.render();
+			$("#container").html(this.el);
             this.listenTo(this.model.rectangles, "change", this.render);
+			this.render();
+            console.log("initializing default view");
         },
         model: { rectangles: app.rectangles },
+        showRectangle : function(ev) {
+        	var id = $(ev.target).data('rectangleId');
+		    app.router.navigate('rectangles/' + id, true);
+		},
+		events : {
+		    "click .rectangle" : "showRectangle"
+		},
         render: function() {
             this.$el.html(this.template({
                 model: this.model,
@@ -102,6 +109,30 @@
             }));
         }
     });
+    app.RectangleView = Backbone.View.extend({
+        tagName: 'div',
+        id: 'rectangle_view',
+        template: _.template($('#rectangle-template').html()),
+        initialize: function() {
+			$("#container").html(this.el);
+            this.listenTo(this.model, "change", this.render);
+			this.render();
+            console.log("initializing rectangle view");
+        },
+        showAll : function(ev) {
+		    app.router.navigate('', true);
+		},
+		events : {
+		    "click" : "showAll"
+		},
+        render: function() {
+            this.$el.html(this.template({
+                rectangle: this.model
+            }));
+        }
+    });
+
+
 
 
     var AppRouter = Backbone.Router.extend({
@@ -111,14 +142,13 @@
             // Backbone will try to match the route above first
         }
     });
-    
 
     // Instantiate the router
     app.router = new AppRouter;
     app.router.on('route:getRectangle', function(id) {
-        // Note the variable in the route definition being passed in here
-        alert("Get post number " + id);
-        switchView(null);
+        var rectangle = app.rectangles.get(id);
+        console.log(rectangle);
+        app.switchView(new app.RectangleView({model: rectangle}));
     });
     
     app.router.on('route:defaultRoute', function(actions) {
