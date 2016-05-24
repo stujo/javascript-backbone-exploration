@@ -30,7 +30,7 @@
 
         var pojos = localStorage.findAll();
 
-        if (typeof pojos !== 'object') {
+        if (typeof pojos !== 'object' || pojos.length == 0) {
             pojos = [];
             // POJOs can be passed instead of 'Rectangle' objects
             for (var i = 1; i < 10; i++) {
@@ -68,9 +68,11 @@
 
         setInterval(function() {
             var rect = rectangles.at(randomInt(0, rectangles.length - 1));
-            rect.set('color', randomColor());
-            rect.set('left', randomPosition());
-            rect.save();
+            if(rect){
+	            rect.set('color', randomColor());
+	            rect.set('left', randomPosition());
+	            rect.save();
+	        }
         }, 1000);
 
 
