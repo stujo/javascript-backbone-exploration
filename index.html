@@ -39,12 +39,14 @@
     </script>
 
     <script type="text/template" id="rectangle-template">
-     	<div data-rectangle-id="<%= rectangle.get('id') %>">
-	     	<div>top: <%= rectangle.get('top') %>px</div>
-	     	<div>left: <%= rectangle.get('left') %>px</div>
-	     	<div>height: <%= rectangle.get('height') %>px</div>
-	     	<div>width: <%= rectangle.get('width') %>px</div>
-	     	<div>background-color: <%= rectangle.get('color') %></div>
+     	<div class="rectangle-info" data-rectangle-id="<%= rectangle.get('id') %>" style="background-color: <%= rectangle.get('color') %>;">
+     	    <table>
+	     	<tr><td>top:</td><td><%= rectangle.get('top') %> px</td></tr>
+	     	<tr><td>left:</td><td><%= rectangle.get('left')%> px</td></tr>
+	     	<tr><td>height:</td><td><%= rectangle.get('height')%> px</td></tr>
+	     	<tr><td>width:</td><td><%= rectangle.get('width')%> px</td></tr>
+	     	<tr><td>background-color:</td><td><%= rectangle.get('color') %></td></tr>
+	     	</table>
      	</div>
     </script>
 
